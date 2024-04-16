@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.10",
     "@toruslabs/fetch-node-details": "^13.2.0",
     "@toruslabs/torus.js": "^12.2.0",
+    "graphql": "^16.8.1",
     "moralis": "^2.25.2",
     "moralis-v1": "^1.13.0",
     "next": "12.1.5",

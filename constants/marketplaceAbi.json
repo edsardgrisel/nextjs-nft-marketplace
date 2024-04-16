@@ -1,0 +1,465 @@
+[
+    { "type": "constructor", "inputs": [], "stateMutability": "nonpayable" },
+    {
+        "type": "function",
+        "name": "approvePawnRequest",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "buyNft",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "calculateInterest",
+        "inputs": [
+            { "name": "loanAmount", "type": "uint256", "internalType": "uint256" },
+            { "name": "interestRate", "type": "uint256", "internalType": "uint256" },
+            { "name": "startTime", "type": "uint256", "internalType": "uint256" },
+            { "name": "endTime", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "deposit",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "payable"
+    },
+    {
+        "type": "function",
+        "name": "foreclosePawnAgreement",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "getAllListedNfts",
+        "inputs": [],
+        "outputs": [
+            { "name": "nftAddresses", "type": "address[]", "internalType": "address[]" },
+            { "name": "tokenIds", "type": "uint256[]", "internalType": "uint256[]" }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getBalance",
+        "inputs": [{ "name": "user", "type": "address", "internalType": "address" }],
+        "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getFeesAccumulated",
+        "inputs": [],
+        "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getNftPawnAgreement",
+        "inputs": [{ "name": "user", "type": "address", "internalType": "address" }],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple",
+                "internalType": "struct NftPawnShop.PawnAgreement",
+                "components": [
+                    { "name": "borrower", "type": "address", "internalType": "address" },
+                    { "name": "lender", "type": "address", "internalType": "address" },
+                    { "name": "nftAddress", "type": "address", "internalType": "address" },
+                    { "name": "tokenId", "type": "uint256", "internalType": "uint256" },
+                    { "name": "loanAmount", "type": "uint256", "internalType": "uint256" },
+                    { "name": "loanDuration", "type": "uint256", "internalType": "uint256" },
+                    { "name": "interestRate", "type": "uint256", "internalType": "uint256" },
+                    { "name": "startTime", "type": "uint256", "internalType": "uint256" },
+                    { "name": "endTime", "type": "uint256", "internalType": "uint256" },
+                    { "name": "paidBackOrForeclosed", "type": "bool", "internalType": "bool" }
+                ]
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getNftPawnRequest",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple",
+                "internalType": "struct NftPawnShop.PawnRequest",
+                "components": [
+                    { "name": "borrower", "type": "address", "internalType": "address" },
+                    { "name": "nftAddress", "type": "address", "internalType": "address" },
+                    { "name": "tokenId", "type": "uint256", "internalType": "uint256" },
+                    { "name": "loanAmount", "type": "uint256", "internalType": "uint256" },
+                    { "name": "loanDuration", "type": "uint256", "internalType": "uint256" },
+                    { "name": "interestRate", "type": "uint256", "internalType": "uint256" }
+                ]
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getOwner",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getOwnerOfContract",
+        "inputs": [],
+        "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getPrice",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "getUserBalance",
+        "inputs": [{ "name": "user", "type": "address", "internalType": "address" }],
+        "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "listNft",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" },
+            { "name": "price", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "onERC721Received",
+        "inputs": [
+            { "name": "", "type": "address", "internalType": "address" },
+            { "name": "", "type": "address", "internalType": "address" },
+            { "name": "", "type": "uint256", "internalType": "uint256" },
+            { "name": "", "type": "bytes", "internalType": "bytes" }
+        ],
+        "outputs": [{ "name": "", "type": "bytes4", "internalType": "bytes4" }],
+        "stateMutability": "pure"
+    },
+    {
+        "type": "function",
+        "name": "owner",
+        "inputs": [],
+        "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "removeListing",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "removePawnRequest",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "renounceOwnership",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "repayLoan",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "requestPawn",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" },
+            { "name": "loanAmount", "type": "uint256", "internalType": "uint256" },
+            { "name": "loanDuration", "type": "uint256", "internalType": "uint256" },
+            { "name": "interestRate", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "transferOwnership",
+        "inputs": [{ "name": "newOwner", "type": "address", "internalType": "address" }],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "updateListingPrice",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" },
+            { "name": "price", "type": "uint256", "internalType": "uint256" }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "withdraw",
+        "inputs": [{ "name": "amount", "type": "uint256", "internalType": "uint256" }],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "withdrawFees",
+        "inputs": [{ "name": "amount", "type": "uint256", "internalType": "uint256" }],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "event",
+        "name": "NftDelisted",
+        "inputs": [
+            { "name": "seller", "type": "address", "indexed": true, "internalType": "address" },
+            {
+                "name": "nftAddress",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            { "name": "tokenId", "type": "uint256", "indexed": true, "internalType": "uint256" }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "NftListed",
+        "inputs": [
+            { "name": "seller", "type": "address", "indexed": true, "internalType": "address" },
+            {
+                "name": "nftAddress",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            { "name": "tokenId", "type": "uint256", "indexed": true, "internalType": "uint256" },
+            { "name": "price", "type": "uint256", "indexed": false, "internalType": "uint256" }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "NftSold",
+        "inputs": [
+            { "name": "buyer", "type": "address", "indexed": true, "internalType": "address" },
+            {
+                "name": "nftAddress",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            { "name": "tokenId", "type": "uint256", "indexed": true, "internalType": "uint256" },
+            { "name": "price", "type": "uint256", "indexed": false, "internalType": "uint256" }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "OwnershipTransferred",
+        "inputs": [
+            {
+                "name": "previousOwner",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            { "name": "newOwner", "type": "address", "indexed": true, "internalType": "address" }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "PawnAgreementRemoved",
+        "inputs": [
+            { "name": "borrower", "type": "address", "indexed": false, "internalType": "address" },
+            { "name": "lender", "type": "address", "indexed": true, "internalType": "address" },
+            {
+                "name": "nftAddress",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            { "name": "tokenId", "type": "uint256", "indexed": true, "internalType": "uint256" }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "PawnRequestApproved",
+        "inputs": [
+            { "name": "borrower", "type": "address", "indexed": false, "internalType": "address" },
+            { "name": "lender", "type": "address", "indexed": true, "internalType": "address" },
+            {
+                "name": "nftAddress",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            { "name": "tokenId", "type": "uint256", "indexed": true, "internalType": "uint256" },
+            {
+                "name": "loanAmount",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            },
+            {
+                "name": "loanDuration",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            },
+            {
+                "name": "interestRate",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "PawnRequestRemoved",
+        "inputs": [
+            { "name": "borrower", "type": "address", "indexed": true, "internalType": "address" },
+            {
+                "name": "nftAddress",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            { "name": "tokenId", "type": "uint256", "indexed": true, "internalType": "uint256" }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "event",
+        "name": "PawnRequested",
+        "inputs": [
+            { "name": "borrower", "type": "address", "indexed": true, "internalType": "address" },
+            {
+                "name": "nftAddress",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            { "name": "tokenId", "type": "uint256", "indexed": true, "internalType": "uint256" },
+            {
+                "name": "loanAmount",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            },
+            {
+                "name": "loanDuration",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            },
+            {
+                "name": "interestRate",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            }
+        ],
+        "anonymous": false
+    },
+    { "type": "error", "name": "NftPawnShop__CannotApproveOwnPawnRequest", "inputs": [] },
+    {
+        "type": "error",
+        "name": "NftPawnShop__InsufficientBalance",
+        "inputs": [
+            { "name": "amount", "type": "uint256", "internalType": "uint256" },
+            { "name": "balance", "type": "uint256", "internalType": "uint256" }
+        ]
+    },
+    { "type": "error", "name": "NftPawnShop__MustBeMoreThanZero", "inputs": [] },
+    { "type": "error", "name": "NftPawnShop__MustBeOwner", "inputs": [] },
+    { "type": "error", "name": "NftPawnShop__MustNotBeZeroAddress", "inputs": [] },
+    {
+        "type": "error",
+        "name": "NftPawnShop__NftAlreadyListed",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ]
+    },
+    {
+        "type": "error",
+        "name": "NftPawnShop__NftNotListed",
+        "inputs": [
+            { "name": "nftAddress", "type": "address", "internalType": "address" },
+            { "name": "tokenId", "type": "uint256", "internalType": "uint256" }
+        ]
+    },
+    { "type": "error", "name": "NftPawnShop__NoLoanToForecloseOn", "inputs": [] },
+    { "type": "error", "name": "NftPawnShop__NoLoanToRepay", "inputs": [] },
+    { "type": "error", "name": "NftPawnShop__NoPawnRequestToRemove", "inputs": [] },
+    {
+        "type": "error",
+        "name": "OwnableInvalidOwner",
+        "inputs": [{ "name": "owner", "type": "address", "internalType": "address" }]
+    },
+    {
+        "type": "error",
+        "name": "OwnableUnauthorizedAccount",
+        "inputs": [{ "name": "account", "type": "address", "internalType": "address" }]
+    }
+]
