@@ -4,8 +4,9 @@ import nftAbi from "../constants/nftAbi.json"
 import Image from "next/image"
 import { Card, useNotification } from "web3uikit"
 import { ethers } from "ethers"
-import UpdateListingModal from "./UpdateListingModal"
+import RemovePawnRequestModal from "./RemovePawnRequestModal"
 import BuyListingModal from "./BuyListingModal"
+import ApprovePawnRequestModal from "./ApprovePawnRequestModal"
 
 const truncateStr = (fullStr, strLen) => {
     if (fullStr.length <= strLen) return fullStr
@@ -22,16 +23,25 @@ const truncateStr = (fullStr, strLen) => {
     )
 }
 
-export default function NftBox({ price, nftAddress, tokenId, marketplaceAddress, seller }) {
+export default function PawnBox({
+    loanAmount,
+    loanDuration,
+    interestRate,
+    nftAddress,
+    tokenId,
+    marketplaceAddress,
+    borrower,
+}) {
     const { isWeb3Enabled, account } = useMoralis()
     const [imageURI, setImageURI] = useState("")
     const [tokenName, setTokenName] = useState("")
     const [tokenDescription, setTokenDescription] = useState("")
-    const [showEditListingModal, setShowEditListingModal] = useState(false)
-    const hideEditListingModal = () => setShowEditListingModal(false)
 
-    const [showBuyListingModal, setShowBuyListingModal] = useState(false)
-    const hideBuyListingModal = () => setShowBuyListingModal(false)
+    const [showApprovePawnRequestModal, setShowApprovePawnRequestModal] = useState(false)
+    const hideApprovePawnRequestModal = () => setShowApprovePawnRequestModal(false)
+
+    const [showRemovePawnRequestModal, setShowRemovePawnRequestModal] = useState(false)
+    const hideRemovePawnRequestModal = () => setShowRemovePawnRequestModal(false)
 
     const dispatch = useNotification()
 
@@ -73,11 +83,12 @@ export default function NftBox({ price, nftAddress, tokenId, marketplaceAddress,
         }
     }, [isWeb3Enabled])
 
-    const isOwnedByUser = seller === account || seller === undefined
-    const formattedSellerAddress = isOwnedByUser ? "you" : truncateStr(seller || "", 15)
+    const isOwnedByUser = borrower === account || borrower === undefined
+    const formattedSellerAddress = isOwnedByUser ? "you" : truncateStr(borrower || "", 15)
 
     const handleCardClick = () => {
-        isOwnedByUser ? setShowEditListingModal(true) : setShowBuyListingModal(true)
+        console.log("hello")
+        isOwnedByUser ? setShowRemovePawnRequestModal(true) : setShowApprovePawnRequestModal(true)
     }
 
     return (
@@ -85,23 +96,27 @@ export default function NftBox({ price, nftAddress, tokenId, marketplaceAddress,
             <div>
                 {imageURI ? (
                     <div>
-                        <UpdateListingModal
-                            isVisible={showEditListingModal}
-                            tokenId={tokenId}
-                            marketplaceAddress={marketplaceAddress}
+                        <RemovePawnRequestModal
                             nftAddress={nftAddress}
-                            onClose={hideEditListingModal}
+                            tokenId={tokenId}
+                            isVisible={showRemovePawnRequestModal}
+                            imageURI={imageURI}
+                            marketplaceAddress={marketplaceAddress}
+                            onClose={hideRemovePawnRequestModal}
                         />
-                        <BuyListingModal
-                            isVisible={showBuyListingModal}
+                        <ApprovePawnRequestModal
+                            isVisible={showApprovePawnRequestModal}
                             tokenId={tokenId}
                             tokenName={tokenName}
                             tokenDescription={tokenDescription}
                             imageURI={imageURI}
-                            price={price}
+                            loanAmount={loanAmount}
+                            loanDuration={loanDuration}
+                            interestRate={interestRate}
+                            borrower={borrower}
                             marketplaceAddress={marketplaceAddress}
                             nftAddress={nftAddress}
-                            onClose={hideBuyListingModal}
+                            onClose={hideApprovePawnRequestModal}
                         />
                         <Card
                             title={tokenName}
@@ -121,7 +136,17 @@ export default function NftBox({ price, nftAddress, tokenId, marketplaceAddress,
                                         width="200"
                                     />
                                     <div className="font-bold">
-                                        {ethers.utils.formatUnits(price, "ether")} ETH
+                                        <ul>
+                                            <li>
+                                                Loan Amount:{" "}
+                                                {ethers.utils.formatUnits(loanAmount, "ether")} ETH
+                                            </li>
+                                            <li>
+                                                Loan Duration:{loanDuration / 10000000000000000}{" "}
+                                                days
+                                            </li>
+                                            <li>Annual Interest Rate:{interestRate}%</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

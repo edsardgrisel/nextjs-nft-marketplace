@@ -4,22 +4,21 @@ import { useWeb3Contract } from "react-moralis"
 import nftMarketplaceAbi from "../constants/marketplaceAbi.json"
 import { ethers } from "ethers"
 
-export default function UpdateListingModal({
+export default function UpdatePawnRequestModal({
     nftAddress,
     tokenId,
     isVisible,
+    imageUri,
     marketplaceAddress,
     onClose,
 }) {
     const dispatch = useNotification()
 
-    const [priceToUpdateListingWith, setPriceToUpdateListingWith] = useState(0)
-
     const handleUpdateListingSuccess = () => {
         dispatch({
             type: "success",
-            message: "listing updated",
-            title: "Listing updated - please refresh",
+            message: "Please refresh",
+            title: "Pawn request removed",
             position: "topR",
         })
         onClose && onClose()
@@ -29,11 +28,10 @@ export default function UpdateListingModal({
     const { runContractFunction: updateListing } = useWeb3Contract({
         abi: nftMarketplaceAbi,
         contractAddress: marketplaceAddress,
-        functionName: "updateListingPrice",
+        functionName: "removePawnRequest",
         params: {
             nftAddress: nftAddress,
             tokenId: tokenId,
-            price: ethers.utils.parseEther(priceToUpdateListingWith || "0"),
         },
     })
 
@@ -51,14 +49,9 @@ export default function UpdateListingModal({
                 })
             }}
         >
-            <Input
-                label="Update listing price in L1 Currency (ETH)"
-                name="New listing price"
-                type="number"
-                onChange={(event) => {
-                    setPriceToUpdateListingWith(event.target.value)
-                }}
-            />
+            <div className="flex flex-col items-center gap-2">
+                Do you want to remove pawn request
+            </div>
         </Modal>
     )
 }

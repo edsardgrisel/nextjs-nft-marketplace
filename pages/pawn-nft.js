@@ -20,7 +20,11 @@ export default function Home() {
         console.log("Approving...")
         const nftAddress = data.data[0].inputResult
         const tokenId = data.data[1].inputResult
-        const price = ethers.utils.parseUnits(data.data[2].inputResult, "ether").toString()
+        const loanAmount = ethers.utils.parseUnits(data.data[2].inputResult, "ether").toString()
+        const interestRate = data.data[3].inputResult
+        const loanDuration = ethers.utils
+            .parseUnits((data.data[4].inputResult / 100).toString(), "ether")
+            .toString()
 
         const approveOptions = {
             abi: nftAbi,
@@ -34,27 +38,42 @@ export default function Home() {
 
         await runContractFunction({
             params: approveOptions,
-            onSuccess: (tx) => handleApproveSuccess(tx, nftAddress, tokenId, price),
+            onSuccess: (tx) =>
+                handleApproveSuccess(
+                    tx,
+                    nftAddress,
+                    tokenId,
+                    loanAmount,
+                    interestRate,
+                    loanDuration,
+                ),
             onError: (error) => {
                 console.log(error)
             },
         })
     }
 
-    async function handleApproveSuccess(tx, nftAddress, tokenId, price) {
-        console.log("Ok! Now time to list")
-        console.log(`Price: ${price}`)
-        console.log(`NFT Address: ${nftAddress}`)
-        console.log(`Token ID: ${tokenId}`)
+    async function handleApproveSuccess(
+        tx,
+        nftAddress,
+        tokenId,
+        loanAmount,
+        interestRate,
+        loanDuration,
+    ) {
+        console.log("Ok! Now time to list pawn request")
+
         await tx.wait()
         const listOptions = {
             abi: nftMarketplaceAbi,
             contractAddress: marketplaceAddress,
-            functionName: "listNft",
+            functionName: "requestPawn",
             params: {
                 nftAddress: nftAddress,
                 tokenId: tokenId,
-                price: price,
+                loanAmount: loanAmount,
+                interestRate: interestRate,
+                loanDuration: loanDuration,
             },
         }
 
@@ -68,8 +87,16 @@ export default function Home() {
     async function handleListSuccess() {
         dispatch({
             type: "success",
-            message: "NFT listing",
-            title: "NFT listed",
+            message: "Waiting for someone to approve pawn request",
+            title: "Pawn request listed",
+            position: "topR",
+        })
+    }
+
+    const handleWithdrawSuccess = () => {
+        dispatch({
+            type: "success",
+            message: "Withdrawing proceeds",
             position: "topR",
         })
     }
@@ -93,13 +120,25 @@ export default function Home() {
                         key: "tokenId",
                     },
                     {
-                        name: "Price (in ETH)",
+                        name: "Loan Amount (in ETH)",
                         type: "number",
                         value: "",
-                        key: "price",
+                        key: "loanAmount",
+                    },
+                    {
+                        name: "Interest rate (in percent)",
+                        type: "number",
+                        value: "",
+                        key: "interestRate",
+                    },
+                    {
+                        name: "Loan duration (in days)",
+                        type: "number",
+                        value: "",
+                        key: "loanDuration",
                     },
                 ]}
-                title="Sell your NFT!"
+                title="Pawn your NFT!"
                 id="Main Form"
             />
         </div>

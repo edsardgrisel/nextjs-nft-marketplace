@@ -13,4 +13,19 @@ const GET_ACTIVE_LISTINGS = gql`
     }
 `
 
-export default GET_ACTIVE_LISTINGS
+const GET_PAWN_REQUESTS = gql`
+    {
+        activePawnRequests(first: 5, where: { lender: null }) {
+            id
+            borrower
+            lender
+            nftAddress
+            tokenId
+            loanAmount
+            loanDuration
+            interestRate
+        }
+    }
+`
+
+export { GET_ACTIVE_LISTINGS, GET_PAWN_REQUESTS }

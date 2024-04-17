@@ -15,8 +15,14 @@ export default function Header() {
                 <Link href="/list-nft">
                     <a className="font-sans mr-4 p-4 text-blue-800">List Nft</a>
                 </Link>
-                <Link href="/list-nft">
+                <Link href="/pawn-nft">
                     <a className="font-sans mr-4 p-4 text-blue-800">Pawn Nft</a>
+                </Link>
+                <Link href="/withdraw">
+                    <a className="font-sans mr-4 p-4 text-blue-800">Withdraw</a>
+                </Link>
+                <Link href="/your-pawn-agreements">
+                    <a className="font-sans mr-4 p-4 text-blue-800">Your Active Loans</a>
                 </Link>
             </div>
             <div className="ml-auto">
