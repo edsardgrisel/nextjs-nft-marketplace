@@ -28,4 +28,21 @@ const GET_PAWN_REQUESTS = gql`
     }
 `
 
-export { GET_ACTIVE_LISTINGS, GET_PAWN_REQUESTS }
+const GET_PAWN_AGREEMENT = gql`
+    query GetPawnAgreements($userId: ID!) {
+        activePawnAgreements(
+            first: 5
+            where: { or: [{ borrower: $userId }, { lender: $userId }] }
+        ) {
+            id
+            borrower
+            lender
+            nftAddress
+            tokenId
+            loanAmount
+            loanDuration
+            interestRate
+        }
+    }
+`
+export { GET_ACTIVE_LISTINGS, GET_PAWN_REQUESTS, GET_PAWN_AGREEMENT }

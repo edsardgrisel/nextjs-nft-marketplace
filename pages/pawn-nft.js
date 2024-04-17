@@ -21,10 +21,10 @@ export default function Home() {
         const nftAddress = data.data[0].inputResult
         const tokenId = data.data[1].inputResult
         const loanAmount = ethers.utils.parseUnits(data.data[2].inputResult, "ether").toString()
-        const interestRate = data.data[3].inputResult
-        const loanDuration = ethers.utils
-            .parseUnits((data.data[4].inputResult / 100).toString(), "ether")
+        const interestRate = ethers.utils
+            .parseUnits((data.data[3].inputResult / 100).toString(), "ether")
             .toString()
+        const loanDuration = data.data[4].inputResult
 
         const approveOptions = {
             abi: nftAbi,
