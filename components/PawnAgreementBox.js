@@ -7,6 +7,9 @@ import { ethers } from "ethers"
 import RemovePawnRequestModal from "./RemovePawnRequestModal"
 import BuyListingModal from "./BuyListingModal"
 import ApprovePawnRequestModal from "./ApprovePawnRequestModal"
+import RepayLoanModal from "./RepayLoanModal"
+import nftMarketplaceAbi from "../constants/marketplaceAbi.json"
+import ForecloseOnLoanModal from "./ForecloseOnLoanModal"
 
 const truncateStr = (fullStr, strLen) => {
     if (fullStr.length <= strLen) return fullStr
@@ -23,7 +26,7 @@ const truncateStr = (fullStr, strLen) => {
     )
 }
 
-export default function PawnBox({
+export default function PawnAgreementBox({
     loanAmount,
     loanDuration,
     interestRate,
@@ -31,17 +34,20 @@ export default function PawnBox({
     tokenId,
     marketplaceAddress,
     borrower,
+    lender,
+    blockTimestamp,
 }) {
     const { isWeb3Enabled, account } = useMoralis()
     const [imageURI, setImageURI] = useState("")
     const [tokenName, setTokenName] = useState("")
     const [tokenDescription, setTokenDescription] = useState("")
+    const [amountToRepay, setAmountToRepay] = useState(0)
 
-    const [showApprovePawnRequestModal, setShowApprovePawnRequestModal] = useState(false)
-    const hideApprovePawnRequestModal = () => setShowApprovePawnRequestModal(false)
+    const [showForecloseOnLoanModal, setShowForecloseOnLoanModal] = useState(false)
+    const hideForecloseOnLoanModal = () => setShowForecloseOnLoanModal(false)
 
-    const [showRemovePawnRequestModal, setShowRemovePawnRequestModal] = useState(false)
-    const hideRemovePawnRequestModal = () => setShowRemovePawnRequestModal(false)
+    const [showRepayLoanModal, setShowRepayLoanModal] = useState(false)
+    const hideRepayLoanModal = () => setShowRepayLoanModal(false)
 
     const dispatch = useNotification()
 
@@ -51,6 +57,18 @@ export default function PawnBox({
         functionName: "tokenURI",
         params: {
             tokenId: tokenId,
+        },
+    })
+
+    const { runContractFunction: calculateInterest } = useWeb3Contract({
+        abi: nftMarketplaceAbi,
+        contractAddress: marketplaceAddress,
+        functionName: "calculateInterest",
+        params: {
+            loanAmount: loanAmount,
+            interestRate: interestRate,
+            startTime: blockTimestamp,
+            endTime: blockTimestamp + loanDuration,
         },
     })
 
@@ -68,6 +86,9 @@ export default function PawnBox({
             setImageURI(imageURIURL)
             setTokenName(tokenURIResponse.name)
             setTokenDescription(tokenURIResponse.description)
+            const interest = await calculateInterest()
+            setAmountToRepay(interest.add(loanAmount).toString())
+
             // We could render the Image on our sever, and just call our sever.
             // For testnets & mainnet -> use moralis server hooks
             // Have the world adopt IPFS
@@ -88,7 +109,7 @@ export default function PawnBox({
 
     const handleCardClick = () => {
         console.log("hello")
-        isOwnedByUser ? setShowRemovePawnRequestModal(true) : setShowApprovePawnRequestModal(true)
+        isOwnedByUser ? setShowRepayLoanModal(true) : setShowForecloseOnLoanModal(true)
     }
 
     return (
@@ -96,16 +117,16 @@ export default function PawnBox({
             <div>
                 {imageURI ? (
                     <div>
-                        <RemovePawnRequestModal
+                        <ForecloseOnLoanModal
                             nftAddress={nftAddress}
                             tokenId={tokenId}
-                            isVisible={showRemovePawnRequestModal}
+                            isVisible={showForecloseOnLoanModal}
                             imageURI={imageURI}
                             marketplaceAddress={marketplaceAddress}
-                            onClose={hideRemovePawnRequestModal}
+                            onClose={hideForecloseOnLoanModal}
                         />
-                        <ApprovePawnRequestModal
-                            isVisible={showApprovePawnRequestModal}
+                        <RepayLoanModal
+                            isVisible={showRepayLoanModal}
                             tokenId={tokenId}
                             tokenName={tokenName}
                             tokenDescription={tokenDescription}
@@ -113,10 +134,12 @@ export default function PawnBox({
                             loanAmount={loanAmount}
                             loanDuration={loanDuration}
                             interestRate={interestRate}
+                            amountToRepay={amountToRepay}
                             borrower={borrower}
+                            lender={lender}
                             marketplaceAddress={marketplaceAddress}
                             nftAddress={nftAddress}
-                            onClose={hideApprovePawnRequestModal}
+                            onClose={hideRepayLoanModal}
                         />
                         <Card
                             title={tokenName}

@@ -32,7 +32,12 @@ const GET_PAWN_AGREEMENT = gql`
     query GetPawnAgreements($userId: ID!) {
         activePawnAgreements(
             first: 5
-            where: { or: [{ borrower: $userId }, { lender: $userId }] }
+            where: {
+                or: [
+                    { borrower: $userId, lender_not: "0x000000000000000000000000000000000000dead" }
+                    { lender: $userId, lender_not: "0x000000000000000000000000000000000000dead" }
+                ]
+            }
         ) {
             id
             borrower
@@ -42,6 +47,7 @@ const GET_PAWN_AGREEMENT = gql`
             loanAmount
             loanDuration
             interestRate
+            blockTimestamp
         }
     }
 `

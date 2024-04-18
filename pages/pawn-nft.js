@@ -24,7 +24,8 @@ export default function Home() {
         const interestRate = ethers.utils
             .parseUnits((data.data[3].inputResult / 100).toString(), "ether")
             .toString()
-        const loanDuration = data.data[4].inputResult
+        const loanDuration = data.data[4].inputResult * 86400
+        const loanDurationFixed = parseFloat(loanDuration.toFixed(15))
 
         const approveOptions = {
             abi: nftAbi,
@@ -45,7 +46,7 @@ export default function Home() {
                     tokenId,
                     loanAmount,
                     interestRate,
-                    loanDuration,
+                    loanDurationFixed,
                 ),
             onError: (error) => {
                 console.log(error)

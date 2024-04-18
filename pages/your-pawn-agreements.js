@@ -7,7 +7,7 @@ import { ethers } from "ethers"
 import nftAbi from "../constants/nftAbi.json"
 import nftMarketplaceAbi from "../constants/marketplaceAbi.json"
 import { useEffect, useState } from "react"
-import PawnBox from "../components/PawnBox"
+import PawnAgreementBox from "../components/PawnAgreementBox"
 import { useQuery } from "@apollo/client"
 import { GET_PAWN_AGREEMENT } from "../constants/subgraphQueries"
 
@@ -25,38 +25,6 @@ export default function Home() {
     })
 
     const { runContractFunction } = useWeb3Contract()
-
-    async function withdraw(data) {
-        console.log("Withdrawing...")
-        const amountToWithdraw = ethers.utils
-            .parseUnits(data.data[0].inputResult, "ether")
-            .toString()
-
-        const withdrawOptions = {
-            abi: nftMarketplaceAbi,
-            contractAddress: marketplaceAddress,
-            functionName: "withdraw",
-            params: {
-                amount: amountToWithdraw,
-            },
-        }
-
-        await runContractFunction({
-            params: withdrawOptions,
-            onSuccess: () => handleWithdrawSuccess(amountToWithdraw),
-            onError: (error) => {
-                console.log(error)
-            },
-        })
-    }
-
-    const handleWithdrawSuccess = (amountToWithdraw) => {
-        dispatch({
-            type: "success",
-            message: "Withdrawing " + amountToWithdraw + " ETH.",
-            position: "topR",
-        })
-    }
 
     async function setupUI() {
         const returnedpawnAgreement = await runContractFunction({
@@ -92,19 +60,23 @@ export default function Home() {
                                 nftAddress,
                                 tokenId,
                                 borrower,
+                                lender,
                                 loanAmount,
                                 loanDuration,
                                 interestRate,
+                                blockTimestamp,
                             } = nft
                             return marketplaceAddress ? (
-                                <PawnBox
+                                <PawnAgreementBox
                                     loanAmount={loanAmount}
                                     nftAddress={nftAddress}
                                     tokenId={tokenId}
                                     marketplaceAddress={marketplaceAddress}
                                     borrower={borrower}
+                                    lender={lender}
                                     interestRate={interestRate}
                                     loanDuration={loanDuration}
+                                    blockTimestamp={blockTimestamp}
                                     key={`${nftAddress}${tokenId}`}
                                 />
                             ) : (
