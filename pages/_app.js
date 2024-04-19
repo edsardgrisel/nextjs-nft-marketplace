@@ -4,9 +4,10 @@ import "../styles/globals.css"
 import Header from "../components/Header"
 import Head from "next/head"
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client"
+import { Source } from "graphql"
 
 const client = new ApolloClient({
-    uri: "https://api.studio.thegraph.com/query/70180/nft-marketplace/version/latest",
+    uri: process.env.NEXT_PUBLIC_SUBGRAPH_URL,
     cache: new InMemoryCache(),
 })
 
