@@ -84,8 +84,8 @@ export default function ApprovePawnRequestModal({
                                     Loan Amount: {ethers.utils.formatUnits(loanAmount, "ether")}{" "}
                                     ETH
                                 </li>
-                                <li>Loan Duration: {loanDuration / 10000000000000000} days</li>
-                                <li>Annual Interest Rate: {interestRate}%</li>
+                                <li>Loan Duration: {loanDuration / 86400} days</li>
+                                <li>Annual Interest Rate: {(interestRate * 100) / 1e18}%</li>
                                 <li>Borrower: {borrower}</li>
                                 <li>Token ID: {tokenId}</li>
                                 <li>

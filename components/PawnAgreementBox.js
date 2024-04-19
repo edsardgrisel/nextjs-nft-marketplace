@@ -10,6 +10,8 @@ import ApprovePawnRequestModal from "./ApprovePawnRequestModal"
 import RepayLoanModal from "./RepayLoanModal"
 import nftMarketplaceAbi from "../constants/marketplaceAbi.json"
 import ForecloseOnLoanModal from "./ForecloseOnLoanModal"
+import TooEarlyToForecloseOnLoanModal from "./TooEarlyToForecloseOnLoanModal"
+import web3 from "web3"
 
 const truncateStr = (fullStr, strLen) => {
     if (fullStr.length <= strLen) return fullStr
@@ -49,6 +51,11 @@ export default function PawnAgreementBox({
     const [showRepayLoanModal, setShowRepayLoanModal] = useState(false)
     const hideRepayLoanModal = () => setShowRepayLoanModal(false)
 
+    const [showTooEarlyToForecloseModal, setShowTooEarlyToForecloseModal] = useState(false)
+    const hideTooEarlyToForecloseModal = () => setShowTooEarlyToForecloseModal(false)
+
+    const [canForeclose, setCanForeclose] = useState(false)
+
     const dispatch = useNotification()
 
     const { runContractFunction: getTokenURI } = useWeb3Contract({
@@ -72,6 +79,17 @@ export default function PawnAgreementBox({
         },
     })
 
+    async function getBlockTimestamp(blockNumber = "latest") {
+        try {
+            const block = await web3.eth.getBlock(blockNumber)
+            console.log(
+                `Timestamp for block ${block.number}: ${new Date(block.timestamp * 1000).toLocaleString()}`,
+            )
+        } catch (error) {
+            console.error("Error fetching block:", error)
+        }
+    }
+
     async function updateUI() {
         const tokenURI = await getTokenURI()
         console.log(`The TokenURI is ${tokenURI}`)
@@ -88,6 +106,8 @@ export default function PawnAgreementBox({
             setTokenDescription(tokenURIResponse.description)
             const interest = await calculateInterest()
             setAmountToRepay(interest.add(loanAmount).toString())
+            const timestamp = await getBlockTimestamp()
+            setCanForeclose(timestamp >= blockTimestamp + loanDuration)
 
             // We could render the Image on our sever, and just call our sever.
             // For testnets & mainnet -> use moralis server hooks
@@ -108,8 +128,11 @@ export default function PawnAgreementBox({
     const formattedSellerAddress = isOwnedByUser ? "you" : truncateStr(borrower || "", 15)
 
     const handleCardClick = () => {
-        console.log("hello")
-        isOwnedByUser ? setShowRepayLoanModal(true) : setShowForecloseOnLoanModal(true)
+        isOwnedByUser
+            ? setShowRepayLoanModal(true)
+            : canForeclose
+              ? setShowForecloseOnLoanModal(true)
+              : setShowTooEarlyToForecloseModal(true)
     }
 
     return (
@@ -118,12 +141,24 @@ export default function PawnAgreementBox({
                 {imageURI ? (
                     <div>
                         <ForecloseOnLoanModal
-                            nftAddress={nftAddress}
-                            tokenId={tokenId}
                             isVisible={showForecloseOnLoanModal}
+                            tokenId={tokenId}
+                            tokenName={tokenName}
+                            tokenDescription={tokenDescription}
                             imageURI={imageURI}
+                            loanAmount={loanAmount}
+                            loanDuration={loanDuration}
+                            interestRate={interestRate}
+                            amountToRepay={amountToRepay}
+                            borrower={borrower}
+                            lender={lender}
                             marketplaceAddress={marketplaceAddress}
+                            nftAddress={nftAddress}
                             onClose={hideForecloseOnLoanModal}
+                        />
+                        <TooEarlyToForecloseOnLoanModal
+                            isVisible={showTooEarlyToForecloseModal}
+                            onClose={hideTooEarlyToForecloseModal}
                         />
                         <RepayLoanModal
                             isVisible={showRepayLoanModal}
@@ -164,7 +199,7 @@ export default function PawnAgreementBox({
                                                 Loan Amount:{" "}
                                                 {ethers.utils.formatUnits(loanAmount, "ether")} ETH
                                             </li>
-                                            <li>Loan Duration:{loanDuration} days</li>
+                                            <li>Loan Duration:{loanDuration / 86400} days</li>
                                             <li>
                                                 Annual Interest Rate:
                                                 {(interestRate * 100) / 1e18}%

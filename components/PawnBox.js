@@ -141,7 +141,7 @@ export default function PawnBox({
                                                 Loan Amount:{" "}
                                                 {ethers.utils.formatUnits(loanAmount, "ether")} ETH
                                             </li>
-                                            <li>Loan Duration:{loanDuration} days</li>
+                                            <li>Loan Duration:{loanDuration / 86400} days</li>
                                             <li>
                                                 Annual Interest Rate:
                                                 {(interestRate * 100) / 1e18}%
