@@ -414,6 +414,7 @@
         ],
         "anonymous": false
     },
+    { "type": "error", "name": "NftPawnShop__AlreadyActiveInRequestOrAgreement", "inputs": [] },
     { "type": "error", "name": "NftPawnShop__CannotApproveOwnPawnRequest", "inputs": [] },
     {
         "type": "error",

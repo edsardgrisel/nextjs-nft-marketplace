@@ -2,12 +2,14 @@ import { useMoralis } from "react-moralis"
 import NftBox from "../components/NftBox"
 import { GET_ACTIVE_LISTINGS, GET_PAWN_REQUESTS } from "../constants/subgraphQueries"
 import { useQuery } from "@apollo/client"
-import { networkMapping } from "../constants/networkMapping.json"
+import networkMapping from "../constants/networkMapping.json"
 import PawnBox from "../components/PawnBox"
 
 export default function Home() {
     const { chainId, isWeb3Enabled } = useMoralis()
-    const marketplaceAddress = process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
+    const chainString = chainId ? parseInt(chainId).toString() : null
+    console.log(`NetMap is ${networkMapping}`)
+    const marketplaceAddress = chainId ? networkMapping[chainString].NftMarketplace[0] : null
 
     const {
         loading: listingsLoading,
