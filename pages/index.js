@@ -1,6 +1,10 @@
 import { useMoralis } from "react-moralis"
 import NftBox from "../components/NftBox"
-import { GET_ACTIVE_LISTINGS, GET_PAWN_REQUESTS } from "../constants/subgraphQueries"
+import {
+    GET_ACTIVE_LISTINGS,
+    GET_PAWN_REQUESTS,
+    GET_lISTINGS_AND_REQUESTS,
+} from "../constants/subgraphQueries"
 import { useQuery } from "@apollo/client"
 import networkMapping from "../constants/networkMapping.json"
 import PawnBox from "../components/PawnBox"
@@ -8,19 +12,18 @@ import PawnBox from "../components/PawnBox"
 export default function Home() {
     const { chainId, isWeb3Enabled } = useMoralis()
     const chainString = chainId ? parseInt(chainId).toString() : null
-    console.log(`NetMap is ${networkMapping}`)
     const marketplaceAddress = chainId ? networkMapping[chainString].NftMarketplace[0] : null
 
     const {
         loading: listingsLoading,
         error: listingsError,
-        data: listedNfts,
-    } = useQuery(GET_ACTIVE_LISTINGS)
-    const {
-        loading: pawnRequestsLoading,
-        error: pawnRequestsError,
-        data: pawnRequests,
-    } = useQuery(GET_PAWN_REQUESTS)
+        data: listingsAndRequests,
+    } = useQuery(GET_lISTINGS_AND_REQUESTS)
+    // const {
+    //     loading: pawnRequestsLoading,
+    //     error: pawnRequestsError,
+    //     data: pawnRequests,
+    // } = useQuery(GET_PAWN_REQUESTS)
 
     return (
         <div className="container mx-auto">
@@ -28,10 +31,10 @@ export default function Home() {
                 <h1 className="py-4 px-4 font-bold text-2xl">Recently Listed For Sale</h1>
                 <div className="flex flex-wrap">
                     {isWeb3Enabled && chainId ? (
-                        listingsLoading || !listedNfts ? (
+                        listingsLoading ? (
                             <div>Loading...</div>
                         ) : (
-                            listedNfts.activeListings.map((nft) => {
+                            listingsAndRequests.activeListings.map((nft) => {
                                 const { price, nftAddress, tokenId, seller } = nft
                                 return marketplaceAddress ? (
                                     <NftBox
@@ -59,10 +62,10 @@ export default function Home() {
                 <h1 className="py-4 px-4 font-bold text-2xl">Recently Listed Pawn Requests</h1>
                 <div className="flex flex-wrap">
                     {isWeb3Enabled && chainId ? (
-                        pawnRequestsLoading || !pawnRequests ? (
+                        listingsLoading ? (
                             <div>Loading...</div>
                         ) : (
-                            pawnRequests.activePawnRequests.map((nft) => {
+                            listingsAndRequests.activePawnRequests.map((nft) => {
                                 const {
                                     nftAddress,
                                     tokenId,

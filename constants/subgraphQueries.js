@@ -1,5 +1,27 @@
 import { gql } from "@apollo/client"
 
+const GET_lISTINGS_AND_REQUESTS = gql`
+    {
+        activeListings(first: 5, where: { buyer: null }) {
+            id
+            buyer
+            seller
+            nftAddress
+            tokenId
+            price
+        }
+        activePawnRequests(first: 5, where: { lender: null }) {
+            id
+            borrower
+            lender
+            nftAddress
+            tokenId
+            loanAmount
+            loanDuration
+            interestRate
+        }
+    }
+`
 const GET_ACTIVE_LISTINGS = gql`
     {
         activeListings(first: 5, where: { buyer: null }) {
@@ -51,4 +73,4 @@ const GET_PAWN_AGREEMENT = gql`
         }
     }
 `
-export { GET_ACTIVE_LISTINGS, GET_PAWN_REQUESTS, GET_PAWN_AGREEMENT }
+export { GET_ACTIVE_LISTINGS, GET_PAWN_REQUESTS, GET_PAWN_AGREEMENT, GET_lISTINGS_AND_REQUESTS }
