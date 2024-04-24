@@ -81,7 +81,7 @@ export default function RepayLoanModal({
                                 <li>Borrower: {borrower}</li>
                                 <li>Loan Amount: {ethers.utils.formatEther(loanAmount)} ETH</li>
 
-                                <li>Loan Duration: {loanDuration} days</li>
+                                <li>Loan Duration: {loanDuration / 86400} days</li>
                                 <li>
                                     Annual Interest Rate:
                                     {(interestRate * 100) / 1e18}%

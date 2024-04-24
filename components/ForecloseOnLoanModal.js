@@ -5,7 +5,7 @@ import nftMarketplaceAbi from "../constants/marketplaceAbi.json"
 import { ethers } from "ethers"
 import Image from "next/image"
 
-export default function RepayLoanModal({
+export default function ForecloseOnLoanModal({
     isVisible,
     tokenId,
     tokenName,
@@ -46,11 +46,11 @@ export default function RepayLoanModal({
             onCancel={onClose}
             onCloseButtonPressed={onClose}
             onOk={() => {
-                repayLoan({
+                foreclosePawnAgreement({
                     onError: (error) => {
                         console.log(error)
                     },
-                    onSuccess: () => handleRepaySuccessful(),
+                    onSuccess: () => handleForecloseSuccess(),
                 })
             }}
         >

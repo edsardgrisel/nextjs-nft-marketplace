@@ -24,7 +24,7 @@ export default function ApprovePawnRequestModal({
     const handleBuyListingSuccess = () => {
         dispatch({
             type: "success",
-            message: "You successfully loan out some ETH!",
+            message: "You successfully loaned out some ETH!",
             title: "ETH Loaned out",
             position: "topR",
         })

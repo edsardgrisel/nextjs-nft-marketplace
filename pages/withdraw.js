@@ -43,7 +43,7 @@ export default function Home() {
     const handleWithdrawSuccess = (amountToWithdraw) => {
         dispatch({
             type: "success",
-            message: "Withdrawing " + amountToWithdraw + " ETH.",
+            message: "Withdrawing " + ethers.utils.formatUnits(amountToWithdraw) + " ETH.",
             position: "topR",
         })
     }

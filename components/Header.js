@@ -25,6 +25,9 @@ export default function Header() {
                 <Link href="/your-pawn-agreements">
                     <a className="font-sans mr-4 p-4 text-blue-800">Your Active Loans</a>
                 </Link>
+                <Link href="/mint-nft">
+                    <a className="font-sans mr-4 p-4 text-blue-800">Mint Nft</a>
+                </Link>
             </div>
             <div className="ml-auto">
                 <ConnectButton moralisAuth={false} />

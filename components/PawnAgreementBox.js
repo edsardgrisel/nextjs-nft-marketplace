@@ -11,7 +11,7 @@ import RepayLoanModal from "./RepayLoanModal"
 import nftMarketplaceAbi from "../constants/marketplaceAbi.json"
 import ForecloseOnLoanModal from "./ForecloseOnLoanModal"
 import TooEarlyToForecloseOnLoanModal from "./TooEarlyToForecloseOnLoanModal"
-import web3 from "web3"
+import Web3 from "web3"
 
 const truncateStr = (fullStr, strLen) => {
     if (fullStr.length <= strLen) return fullStr
@@ -75,16 +75,17 @@ export default function PawnAgreementBox({
             loanAmount: loanAmount,
             interestRate: interestRate,
             startTime: blockTimestamp,
-            endTime: blockTimestamp + loanDuration,
+            endTime: Number(blockTimestamp) + Number(loanDuration),
         },
     })
+
+    const providerUrl = process.env.SEPOLIA_RPC_URL
+    const web3 = new Web3("https://eth-sepolia.g.alchemy.com/v2/5D1nLxy6RIof5VUVvACsElGpQOO1nKHI")
 
     async function getBlockTimestamp(blockNumber = "latest") {
         try {
             const block = await web3.eth.getBlock(blockNumber)
-            console.log(
-                `Timestamp for block ${block.number}: ${new Date(block.timestamp * 1000).toLocaleString()}`,
-            )
+            return block.timestamp
         } catch (error) {
             console.error("Error fetching block:", error)
         }
@@ -107,8 +108,18 @@ export default function PawnAgreementBox({
             const interest = await calculateInterest()
             setAmountToRepay(interest.add(loanAmount).toString())
             const timestamp = await getBlockTimestamp()
-            setCanForeclose(timestamp >= blockTimestamp + loanDuration)
-
+            setCanForeclose(Number(timestamp) >= Number(blockTimestamp) + Number(loanDuration))
+            console.log("timestamp: " + timestamp)
+            console.log("blockTimestamp: " + blockTimestamp)
+            console.log("loanDuration: " + loanDuration)
+            // console.log(Number(timestamp) >= Number(blockTimestamp) + Number(loanDuration))
+            // console.log("interest: " + interest.toString())
+            // console.log("loanAMont: " + loanAmount.toString())
+            // console.log("loan Amount: " + loanAmount.toString())
+            // console.log("interestRate: " + interestRate.toString())
+            // console.log("start: " + blockTimestamp.toString())
+            // console.log("end: " + (Number(blockTimestamp) + Number(loanDuration)).toString())
+            // console.log("duration: " + loanDuration.toString())
             // We could render the Image on our sever, and just call our sever.
             // For testnets & mainnet -> use moralis server hooks
             // Have the world adopt IPFS
